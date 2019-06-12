@@ -9,23 +9,25 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 
 public class TestFecha {
   
-  java.util.Date hoy = new Date();
-  String HOY = hoy.getDate()+"/"+(hoy.getMonth()+1)+"/"+(hoy.getYear()+1900);
+  Fecha fechaAlmacenada;
   private JFrame frmGestinFechas;
   private JTextField textField;
   private JTextField textField_1;
   private JTextField textField_2;
-
+  
+  java.util.Date hoy = new Date();
+  String HOY = fechaIntACadena(hoy.getDate(),hoy.getMonth()+1, hoy.getYear()+1900);
+  
   /**
    * Launch the application.
    */
   public static void main(String[] args) {
-    
     
     EventQueue.invokeLater(new Runnable() {
       public void run() {
@@ -83,7 +85,8 @@ public class TestFecha {
       public void actionPerformed(ActionEvent arg0) {
         try {
           Fecha fecha = new Fecha(textField.getText());
-          textField_1.setText(fecha.toString());
+          textField_1.setText(fecha.getFecha());
+          fechaAlmacenada = fecha;
         }catch (FechaNoValidaException fnve) {
           JOptionPane.showMessageDialog(null, fnve.getMessage());
         }
@@ -97,16 +100,13 @@ public class TestFecha {
     btnSumarA.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         try {
-          if(textField_1.getText()=="") {
-            Fecha fecha = new Fecha(textField.getText());
-            textField_1.setText(fecha.suma1DiaFecha());
-          }else {
-            Fecha fecha = new Fecha(textField_1.getText());
-            textField_1.setText(fecha.suma1DiaFecha());
-          }
-          
+          fechaAlmacenada.suma1DiaFecha();
+          textField_1.setText(fechaIntACadena(fechaAlmacenada.getDia(), fechaAlmacenada.getMes(),fechaAlmacenada.getAnho()));
+          fechaAlmacenada.setFecha(fechaIntACadena(fechaAlmacenada.getDia(), fechaAlmacenada.getMes(),fechaAlmacenada.getAnho()));
         } catch (FechaNoValidaException fnve) {
           JOptionPane.showMessageDialog(null, fnve.getMessage());
+        } catch (NullPointerException ex) {
+          JOptionPane.showMessageDialog(null, "Fecha no validada.");
         }
       }
     });
@@ -117,16 +117,13 @@ public class TestFecha {
     btnRestarA.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         try {
-          if(textField_1.getText()=="") {
-            Fecha fecha = new Fecha(textField.getText());
-            textField_1.setText(fecha.resta1DiaFecha());
-          }else {
-            Fecha fecha = new Fecha(textField_1.getText());
-            textField_1.setText(fecha.resta1DiaFecha());
-          }
-          
-        } catch (FechaNoValidaException fnve) {
-          JOptionPane.showMessageDialog(null, fnve.getMessage());
+          fechaAlmacenada.resta1DiaFecha();
+          textField_1.setText(fechaIntACadena(fechaAlmacenada.getDia(), fechaAlmacenada.getMes(),fechaAlmacenada.getAnho()));
+          fechaAlmacenada.setFecha(fechaIntACadena(fechaAlmacenada.getDia(), fechaAlmacenada.getMes(),fechaAlmacenada.getAnho()));
+        } catch (FechaNoValidaException  ex) {
+          JOptionPane.showMessageDialog(null, ex.getMessage());
+        } catch (NullPointerException ex) {
+          JOptionPane.showMessageDialog(null, "Fecha no validada.");
         }
       }
     });
@@ -139,7 +136,15 @@ public class TestFecha {
     JButton btnDiasHastaHoy = new JButton("Dias hasta hoy");
     btnDiasHastaHoy.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        JOptionPane.showMessageDialog(null, "Work In Progress");
+        try {
+          JOptionPane.showMessageDialog(null, "Hay "+fechaAlmacenada.diasHastaHoy(HOY)+" días entre la fecha almacenada y la fecha de hoy.");
+          
+        } catch (ParseException ex) {
+          JOptionPane.showMessageDialog(null, ex.getMessage());
+        } catch (NullPointerException ex) {
+          JOptionPane.showMessageDialog(null, "Fecha no validada.");
+        }
+
       }
     });
     btnDiasHastaHoy.setFont(new Font("Tahoma", Font.PLAIN, 11));
@@ -156,6 +161,28 @@ public class TestFecha {
     frmGestinFechas.getContentPane().add(textField_2);
     textField_2.setColumns(10);
     textField_2.setText(HOY);
+  }
+  
+  public String fechaIntACadena (int dia, int mes, int anho) {
+    String f = "";
+    if(dia < 10) {
+      f += "0"+dia+"/";
+    }else{
+      f += dia+"/";
+    } if(mes < 10) {
+      f +="0"+mes+"/";
+    } else {
+      f += mes+"/";
+    }if(anho < 10) {
+      f +="0"+anho;
+    }else if(anho < 100) {
+      f +="00"+anho;
+    }else if(anho < 1000) {
+      f +="000"+anho;
+    }else {
+      f += anho;
+    }
+    return f;
   }
   
 
