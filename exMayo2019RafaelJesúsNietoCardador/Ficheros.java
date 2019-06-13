@@ -96,6 +96,11 @@ public class Ficheros {
     ficheroDestino.setBounds(384, 99, 242, 20);
     frmCorrompeficheros.getContentPane().add(ficheroDestino);
     
+    /**
+     * Botón Seleccionar archivo
+     * Permite al usuario seleccionar un archivo del sistema y cambia el valor
+     * del JTextField que tiene debajo
+     */
     btnNewButton_2 = new JButton("Seleccionar archivo");
     btnNewButton_2.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
@@ -126,6 +131,11 @@ public class Ficheros {
     textArea.setEditable(false);
     scrollPane.setViewportView(textArea);
     
+    /**
+     * Botón Corromper
+     * Modifica el contenido del segundo archivo introducido, sustituyéndolo por el
+     * del primero y además modificando algunos de sus caráctes.
+     */
     JButton btnNewButton = new JButton("C0RR0MP3R");
     btnNewButton.setForeground(new Color(0, 51, 0));
     btnNewButton.setBackground(new Color(153, 153, 153));
@@ -182,6 +192,11 @@ public class Ficheros {
     btnNewButton.setBounds(225, 164, 202, 59);
     frmCorrompeficheros.getContentPane().add(btnNewButton);
     
+    /**
+     * Botón Seleccionar archivo
+     * Permite al usuario seleccionar un archivo del sistema y cambia el valor
+     * del JTextField que tiene debajo
+     */
     JButton btnNewButton_1 = new JButton("Seleccionar archivo");
     btnNewButton_1.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent arg0) {

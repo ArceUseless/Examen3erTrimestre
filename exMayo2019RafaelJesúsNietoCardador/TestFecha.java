@@ -17,12 +17,12 @@ public class TestFecha {
   
   Fecha fechaAlmacenada;
   private JFrame frmGestinFechas;
-  private JTextField textField;
-  private JTextField textField_1;
-  private JTextField textField_2;
+  private JTextField fechaIntroducida;
+  private JTextField fechaHoy;
   
   java.util.Date hoy = new Date();
   String HOY = fechaIntACadena(hoy.getDate(),hoy.getMonth()+1, hoy.getYear()+1900);
+  final static int [] DIAS_MES = {31,28,31,30,31,30,31,31,30,31,30,31}; 
   
   /**
    * Launch the application.
@@ -63,30 +63,22 @@ public class TestFecha {
     lblIntroduzcaUnaFecha.setBounds(199, 11, 190, 20);
     frmGestinFechas.getContentPane().add(lblIntroduzcaUnaFecha);
     
-    textField = new JTextField();
-    textField.setBounds(199, 30, 126, 20);
-    frmGestinFechas.getContentPane().add(textField);
-    textField.setColumns(10);
+    fechaIntroducida = new JTextField();
+    fechaIntroducida.setBounds(199, 30, 126, 20);
+    frmGestinFechas.getContentPane().add(fechaIntroducida);
+    fechaIntroducida.setColumns(10);
     
-    textField_1 = new JTextField();
-    textField_1.setEditable(false);
-    textField_1.setBounds(78, 224, 86, 20);
-    frmGestinFechas.getContentPane().add(textField_1);
-    textField_1.setColumns(10);
-    textField_1.setText("");
-    
-    JLabel lblFechaAlmacenada = new JLabel("Fecha almacenada");
-    lblFechaAlmacenada.setBounds(66, 199, 156, 14);
-    frmGestinFechas.getContentPane().add(lblFechaAlmacenada);
-    
+    /**
+     * Botón Validar Fecha
+     * Muestra diferentes mensajes dependiendo de si la fecha introducida es válida o no
+     */
     JButton btnNewButton = new JButton("Validar fecha");
     btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 11));
     btnNewButton.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent arg0) {
-        try {
-          Fecha fecha = new Fecha(textField.getText());
-          textField_1.setText(fecha.getFecha());
-          fechaAlmacenada = fecha;
+        try {  
+          Fecha fecha = new Fecha(fechaIntroducida.getText());
+          JOptionPane.showMessageDialog(null, "La fecha es válida.");
         }catch (FechaNoValidaException fnve) {
           JOptionPane.showMessageDialog(null, fnve.getMessage());
         }
@@ -95,35 +87,46 @@ public class TestFecha {
     btnNewButton.setBounds(10, 95, 136, 72);
     frmGestinFechas.getContentPane().add(btnNewButton);
     
+    /**
+     * Botón Día Posterior
+     * Aumenta un día a la fecha introducida
+     */
     JButton btnSumarA = new JButton("Dia posterior");
     btnSumarA.setFont(new Font("Tahoma", Font.PLAIN, 11));
     btnSumarA.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         try {
-          fechaAlmacenada.suma1DiaFecha();
-          textField_1.setText(fechaIntACadena(fechaAlmacenada.getDia(), fechaAlmacenada.getMes(),fechaAlmacenada.getAnho()));
-          fechaAlmacenada.setFecha(fechaIntACadena(fechaAlmacenada.getDia(), fechaAlmacenada.getMes(),fechaAlmacenada.getAnho()));
+          Fecha fecha = new Fecha(fechaIntroducida.getText());
+          fecha.suma1DiaFecha();
+          //fechaA.setText(fechaIntACadena(fechaAlmacenada.getDia(), fechaAlmacenada.getMes(),fechaAlmacenada.getAnho()));
+          fecha.setFecha(fechaIntACadena(fecha.getDia(), fecha.getMes(),fecha.getAnho()));
+          fechaIntroducida.setText(fecha.getFecha());
         } catch (FechaNoValidaException fnve) {
           JOptionPane.showMessageDialog(null, fnve.getMessage());
         } catch (NullPointerException ex) {
-          JOptionPane.showMessageDialog(null, "Fecha no validada.");
+          JOptionPane.showMessageDialog(null, "Fecha no válida.");
         }
       }
     });
     btnSumarA.setBounds(144, 95, 132, 72);
     frmGestinFechas.getContentPane().add(btnSumarA);
     
+    /**
+     * Botón Día anterior
+     * Resta un día a la fecha introducida
+     */
     JButton btnRestarA = new JButton("Dia anterior");
     btnRestarA.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         try {
-          fechaAlmacenada.resta1DiaFecha();
-          textField_1.setText(fechaIntACadena(fechaAlmacenada.getDia(), fechaAlmacenada.getMes(),fechaAlmacenada.getAnho()));
-          fechaAlmacenada.setFecha(fechaIntACadena(fechaAlmacenada.getDia(), fechaAlmacenada.getMes(),fechaAlmacenada.getAnho()));
-        } catch (FechaNoValidaException  ex) {
-          JOptionPane.showMessageDialog(null, ex.getMessage());
+          Fecha fecha = new Fecha(fechaIntroducida.getText());
+          fecha.resta1DiaFecha();
+          fecha.setFecha(fechaIntACadena(fecha.getDia(), fecha.getMes(),fecha.getAnho()));
+          fechaIntroducida.setText(fecha.getFecha());
+        } catch (FechaNoValidaException fnve) {
+          JOptionPane.showMessageDialog(null, fnve.getMessage());
         } catch (NullPointerException ex) {
-          JOptionPane.showMessageDialog(null, "Fecha no validada.");
+          JOptionPane.showMessageDialog(null, "Fecha no válida.");
         }
       }
     });
@@ -131,18 +134,20 @@ public class TestFecha {
     btnRestarA.setBounds(275, 95, 114, 72);
     frmGestinFechas.getContentPane().add(btnRestarA);
     
-
-    
+    /**
+     * Botón Días hasta hoy
+     * Calcula los días que hay entre la fecha de hoy y la fecha introducida
+     */
     JButton btnDiasHastaHoy = new JButton("Dias hasta hoy");
     btnDiasHastaHoy.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         try {
-          JOptionPane.showMessageDialog(null, "Hay "+fechaAlmacenada.diasHastaHoy(HOY)+" días entre la fecha almacenada y la fecha de hoy.");
-          
-        } catch (ParseException ex) {
+          Fecha fecha = new Fecha(fechaIntroducida.getText());
+          JOptionPane.showMessageDialog(null, "Hay "+fecha.diasHastaHoy(HOY)+" días entre la fecha almacenada y la fecha de hoy.");
+        }catch (ParseException |FechaNoValidaException ex) {
           JOptionPane.showMessageDialog(null, ex.getMessage());
         } catch (NullPointerException ex) {
-          JOptionPane.showMessageDialog(null, "Fecha no validada.");
+          JOptionPane.showMessageDialog(null, "Fecha no válida.");
         }
 
       }
@@ -152,17 +157,23 @@ public class TestFecha {
     frmGestinFechas.getContentPane().add(btnDiasHastaHoy);
     
     JLabel lblFechaDeHoy = new JLabel("Fecha de hoy");
-    lblFechaDeHoy.setBounds(369, 199, 146, 14);
+    lblFechaDeHoy.setBounds(226, 200, 146, 14);
     frmGestinFechas.getContentPane().add(lblFechaDeHoy);
     
-    textField_2 = new JTextField();
-    textField_2.setEditable(false);
-    textField_2.setBounds(369, 224, 86, 20);
-    frmGestinFechas.getContentPane().add(textField_2);
-    textField_2.setColumns(10);
-    textField_2.setText(HOY);
+    fechaHoy = new JTextField();
+    fechaHoy.setEditable(false);
+    fechaHoy.setBounds(226, 225, 86, 20);
+    frmGestinFechas.getContentPane().add(fechaHoy);
+    fechaHoy.setColumns(10);
+    fechaHoy.setText(HOY);
   }
-  
+  /**
+   * Pasándole un día, un mes y un año, devuelve una cadena válida de fecha
+   * @param dia
+   * @param mes
+   * @param anho
+   * @return fecha válida
+   */
   public String fechaIntACadena (int dia, int mes, int anho) {
     String f = "";
     if(dia < 10) {
@@ -184,6 +195,4 @@ public class TestFecha {
     }
     return f;
   }
-  
-
 }
