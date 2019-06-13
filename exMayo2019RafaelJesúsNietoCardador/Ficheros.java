@@ -1,3 +1,20 @@
+/**1. Escribe un programa que usando la interfaz gráfica de Java escoja un fichero del sistema de archivos y
+lo almacene en otro de manera que se sustituyan todas las ocurrencias de los siguientes caracteres
+(mayúscula o minúscula) del fichero original por sus correspondientes números:
+A 4
+B 8
+E 3
+I 1
+O 0
+S 5
+T 7
+Componentes gráficos:
+• Etiquetas.
+• Fichero origen y destino.
+• Botón para ejecutar la acción.
+• Caja de texto con el contenido del fichero destino no editable.
+@author Rafael Nieto
+*/
 package exMayo2019RafaelJesúsNietoCardador;
 
 import java.awt.EventQueue;

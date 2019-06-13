@@ -1,3 +1,18 @@
+/**2
+ * .- Escribe un programa que usando la interfaz gráfica de Java permita al usuario introducir una fecha en
+ *  formato dd/mm/aaaa y que tenga los siguientes botones:
+ *  • Validar fecha: muestra un mensaje diciendo si la fecha es o no válida.
+ *  • Día posterior: Modifica la fecha sumándole un día. Debe validar la fecha antes de hacer la
+ *  operación.
+ *  • Día anterior: Modifica la fecha restándole un día. Debe validar la fecha antes de hacer la
+ * operación.
+ *  • Días hasta hoy: Muestra el número de días que hay entre la fecha introducida y la fecha de hoy.
+ *  Debe validar la fecha antes de hacer la operación.
+ *  • Terminar.
+ *  La fecha debe ser manejada mediante un objeto de una clase que o bien construyáis con sus métodos
+ *  correspondientes o de las que ya existen en la API de Java.
+@author Rafael Nieto
+*/
 package exMayo2019RafaelJesúsNietoCardador;
 
 import java.util.Date;
@@ -166,6 +181,15 @@ public class TestFecha {
     frmGestinFechas.getContentPane().add(fechaHoy);
     fechaHoy.setColumns(10);
     fechaHoy.setText(HOY);
+    
+    JButton btnNewButton_1 = new JButton("Terminar");
+    btnNewButton_1.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        frmGestinFechas.dispose();
+      }
+    });
+    btnNewButton_1.setBounds(10, 166, 518, 23);
+    frmGestinFechas.getContentPane().add(btnNewButton_1);
   }
   /**
    * Pasándole un día, un mes y un año, devuelve una cadena válida de fecha
